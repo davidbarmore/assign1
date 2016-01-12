@@ -14,6 +14,7 @@ public class StringCodeTest {
 	@Test
 	public void testBlowup1() {
 		// basic cases
+		assertEquals("abc", StringCode.blowup("abc"));
 		assertEquals("xxaaaabb", StringCode.blowup("xx3abb"));
 		assertEquals("xxxZZZZ", StringCode.blowup("2x3Z"));
 	}
@@ -41,7 +42,9 @@ public class StringCodeTest {
 		// string with only digits
 		assertEquals("", StringCode.blowup("2"));
 		assertEquals("33", StringCode.blowup("23"));
+		assertEquals("233444555566666", StringCode.blowup("0123456"));
 	}
+
 	
 	
 	//
@@ -58,6 +61,9 @@ public class StringCodeTest {
 		assertEquals(3, StringCode.maxRun("abbcccddbbbxx"));
 		assertEquals(0, StringCode.maxRun(""));
 		assertEquals(3, StringCode.maxRun("hhhooppoo"));
+		assertEquals(1, StringCode.maxRun("a")); //only one character
+		assertEquals(4, StringCode.maxRun("aaaa")); //only one run
+		assertEquals(3, StringCode.maxRun("abbb")); //longest run at end of string
 	}
 	
 	@Test
@@ -71,5 +77,41 @@ public class StringCodeTest {
 	}
 
 	// TODO Need test cases for stringIntersect
+	
+	@Test
+	public void testIntersect1() {
+		// basic cases
+		assertFalse(StringCode.stringIntersect("aaa", "bbb", 1));
+		assertTrue(StringCode.stringIntersect("baaab", "caaac", 3));
+		assertTrue(StringCode.stringIntersect("abcba", "dcdedcd", 1));
+	}
+	
+	@Test
+	public void testIntersect2() {
+		// intersection exists, but is too short
+		assertFalse(StringCode.stringIntersect("abc", "cde", 2));
+		assertFalse(StringCode.stringIntersect("abcba", "bcde", 3));
+		
+		// intersection is longer than necessary (still true)
+		assertTrue(StringCode.stringIntersect("abbbbba", "abbbba", 3));
+		
+		// intersection includes entire string
+		assertTrue(StringCode.stringIntersect("aaa", "caaac", 3));
+		assertTrue(StringCode.stringIntersect("baaab", "baaab", 5));
+	}
+	
+	@Test
+	public void testIntersect3() {
+		// len is shorter than one of the strings
+		assertFalse(StringCode.stringIntersect("abc", "cdecde", 4));
+		
+		// one string is empty
+		assertFalse(StringCode.stringIntersect("", "cdecde", 1));
+		
+		// weird characters
+		assertTrue(StringCode.stringIntersect("1b. 3cz,)", "b. 3bazcc0[", 4));
+		assertFalse(StringCode.stringIntersect("1b. 3cz,)", "bc", 2));
+		assertFalse(StringCode.stringIntersect("1b. 3cz,)", "b.3c", 3));
+	}
 	
 }
