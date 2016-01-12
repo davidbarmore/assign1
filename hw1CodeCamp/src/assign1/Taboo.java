@@ -10,11 +10,33 @@ import java.util.*;
 
 public class Taboo<T> {
 	
+	private HashMap<T, Set<T>> taboo_map;
+	
 	/**
 	 * Constructs a new Taboo using the given rules (see handout.)
 	 * @param rules rules for new Taboo
 	 */
 	public Taboo(List<T> rules) {
+		taboo_map = new HashMap<T, Set<T>>();
+		
+		// iterate through all adjacent pairs of elements in the rules list
+		for (int ii = 0; ii < rules.size()-1; ii++) {
+			T curr_elem = rules.get(ii);
+			T next_elem = rules.get(ii+1);
+			// if neither element is null, the pair defines a rule
+			if (curr_elem != null && next_elem != null) {
+				// if there is already at least one rule for elements following the first one in the pair, add the new follower to the existing list
+				if (taboo_map.containsKey(curr_elem)) {
+					taboo_map.get(curr_elem).add(next_elem);
+				} 
+				// if this is the first rule about elements following curr_elem, create the set and insert it into the map
+				else {
+					Set<T> curr_elem_set = new HashSet<T>();
+					curr_elem_set.add(next_elem);
+					taboo_map.put(curr_elem, curr_elem_set);
+				}
+			}
+		}
 	}
 	
 	/**
@@ -24,7 +46,16 @@ public class Taboo<T> {
 	 * @return elements which should not follow the given element
 	 */
 	public Set<T> noFollow(T elem) {
-		 return null; // TODO YOUR CODE HERE
+		// taboo_map is a hashmap from elements to the sets of elements which cannot follow it
+		// if elem is in taboo_map, lookup the noFollow set from taboo_map
+		if (taboo_map.containsKey(elem)) {
+			return taboo_map.get(elem);
+		} 
+		// if elem is not in taboo_map, then there are no rules about elements following elem, so return the empty set
+		else {
+			Set<T> empty = Collections.emptySet();
+			return empty;
+		}
 	}
 	
 	/**
@@ -33,5 +64,6 @@ public class Taboo<T> {
 	 * @param list collection to reduce
 	 */
 	public void reduce(List<T> list) {
+		
 	}
 }

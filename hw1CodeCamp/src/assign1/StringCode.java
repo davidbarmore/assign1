@@ -107,7 +107,7 @@ public class StringCode {
 		// if stringIntersect hasn't returned yet, then len is no longer than either of the input strings
 		
 		// create a hashset to store all the substrings of length len in a
-		HashSet<String> hs = new HashSet<>();
+		HashSet<String> hs = new HashSet<String>();
 		// store all the substrings in a of length len
 		for (int ii = 0; ii <= length_a-len; ii++) {
 			hs.add(a.substring(ii, ii+len));
