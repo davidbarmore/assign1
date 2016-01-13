@@ -76,7 +76,8 @@ public class StringCodeTest {
 		assertEquals(3, StringCode.maxRun("1112233"));
 	}
 
-	// TODO Need test cases for stringIntersect
+	
+	// stringIntersect
 	
 	@Test
 	public void testIntersect1() {

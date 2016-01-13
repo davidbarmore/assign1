@@ -64,6 +64,25 @@ public class Taboo<T> {
 	 * @param list collection to reduce
 	 */
 	public void reduce(List<T> list) {
+		// The index of the element of the list currently being considered for following restrictions
+		int index = 0;
 		
+		// keep looping while the current element has a successor in the list
+		while (index < list.size() - 1) {
+			T first_elem = list.get(index);
+			T second_elem = list.get(index + 1);
+
+			Set<T> first_elem_set = noFollow(first_elem);
+			
+			// If second_elem is not allowed to follow first_elem, remove second_elem from the list
+			// There is no need to adjust index in this case, since the next pair of elements to be compared will already be in the correct indices following the removal of second_elem
+			if (first_elem_set.contains(second_elem)) {
+				list.remove(index+1);
+			}
+			// If second elem is allowed to follow first_elem, increment index to compare the next pair of elements in the remaining list
+			else {
+				index++;
+			}
+		}
 	}
 }
